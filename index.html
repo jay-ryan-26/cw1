@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.10/dist/vue.js"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <title>Classes</title>
+  </head>
+
+  <body>
+    <div id="app">
+      <h1 class="display-4" v-text="sitename" style="text-align: center"></h1>
+      <div class="card m-5" style="width: 20%">
+        <div class="card-header">
+          <header>
+            <h5 class="card-title">Subject: {{lesson.subject}}</h5>
+          </header>
+        </div>
+        <div class="card-body">
+          <main>
+            <p class="card-text">Location: {{lesson.location}}</p>
+            <p class="card-text">Price: AED {{lesson.price}}</p>
+            <p class="card-text">Spaces: {{lesson.displaySpaces}}</p>
+
+            <div class="d-flex">
+              <button
+                v-on:click="addToCart"
+                v-if="canAddToCart"
+                id="btn_add"
+                class="btn btn-primary ms-auto"
+              >
+                Add to Cart
+              </button>
+
+              <button
+                disabled="disabled"
+                v-else
+                class="btn btn-primary ms-auto"
+              >
+                Add to Cart
+              </button>
+            </div>
+          </main>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Create a Vue instance with some options
+      let app = new Vue({
+        el: "#app",
+        // Initial data has been declared as a function
+        data: {
+          sitename: "After School Activities",
+          // Creating lesson object
+          lesson: {
+            id: 1001,
+            subject: "Arduino",
+            location: "Dubai, UAE",
+            price: 2000,
+            spaces: 5,
+            displaySpaces: 5,
+          },
+          // Creating cart object with empty array
+          cart: [],
+        },
+        methods: {
+          // Add the lesson to the cart
+          addToCart: function () {
+            this.lesson.displaySpaces--;
+            this.cart.push(this.lesson.id);
+          },
+        },
+        // Computed properties are added.
+        computed: {
+          // This computed property checks if the lesson has spaces available.
+          canAddToCart() {
+            return this.lesson.spaces > this.cart.length;
+          },
+        },
+      });
+    </script>
+
+    <!-- Bootstrap code -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+      integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+      integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
