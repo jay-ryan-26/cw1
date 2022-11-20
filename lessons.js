@@ -6,6 +6,7 @@ let lessons = [
     price: 2000,
     spaces: 6,
     rating: 5,
+    image: "./img/arduino.jpg",
   },
   {
     id: 2,
@@ -14,6 +15,7 @@ let lessons = [
     price: 1000,
     spaces: 10,
     rating: 5,
+    image: "./img/python.jpg",
   },
   {
     id: 3,
@@ -22,6 +24,7 @@ let lessons = [
     price: 1500,
     spaces: 15,
     rating: 4.5,
+    image: "./img/js.jpg",
   },
   {
     id: 4,
@@ -30,21 +33,24 @@ let lessons = [
     price: 1000,
     spaces: 11,
     rating: 4,
+    image: "./img/vue.jpg",
   },
   {
     id: 5,
-    subject: "Node",
+    subject: "React",
     location: "Colarado, USA",
     price: 1200,
     spaces: 19,
     rating: 4.5,
+    image: "./img/react.jpg",
   },
   {
     id: 6,
-    subject: "MongoDB",
+    subject: "MySQL",
     location: "Dubai, UAE",
     price: 800,
     spaces: 10,
     rating: 3,
+    image: "./img/sql.jpg",
   },
 ];
