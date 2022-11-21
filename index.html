@@ -5,6 +5,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+      integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
     <script src="./lessons.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.10/dist/vue.js"></script>
     <!-- Bootstrap code -->
@@ -24,45 +33,66 @@
     <title>Classes</title>
   </head>
 
-  <body>
+  <body class="m-4">
     <div id="app">
       <h1 class="display-4" v-text="sitename" style="text-align: center"></h1>
-      <!-- <div v-for="lesson in lessons"> -->
-      <div class="card m-5" style="width: 20%">
-        <div class="card-header">
-          <header>
-            <h5 class="card-title">Subject: {{lesson.subject}}</h5>
-          </header>
-        </div>
-        <div class="card-body">
-          <main>
-            <img v-bind:src="lesson.image" class="img-fluid" alt="" />
-            <p class="card-text">Location: {{lesson.location}}</p>
-            <p class="card-text">Price: AED {{lesson.price}}</p>
-            <p class="card-text">Spaces: {{lesson.displaySpaces}}</p>
+      <div>
+        <button v-on:click="showCheckout">
+          <!-- {{cartItemCount}} -->
+          <span><i class="fa-solid fa-cart-shopping"></i> &nbsp; Checkout</span>
+        </button>
+      </div>
+      <div v-if="showLesson">
+        <div class="card m-5" style="width: 20%">
+          <div class="card-header">
+            <header>
+              <h5 class="card-title">Subject: {{lesson.subject}}</h5>
+            </header>
+          </div>
+          <div class="card-body">
+            <main>
+              <img v-bind:src="lesson.image" class="img-fluid" alt="" />
+              <p class="card-text">Location: {{lesson.location}}</p>
+              <p class="card-text">Price: AED {{lesson.price}}</p>
+              <p class="card-text">Spaces: {{lesson.displaySpaces}}</p>
 
-            <div class="d-flex">
-              <button
-                v-on:click="addToCart"
-                v-if="canAddToCart"
-                id="btn_add"
-                class="btn btn-primary ms-auto"
-              >
-                Add to Cart
-              </button>
+              <div class="d-flex">
+                <button
+                  v-on:click="addToCart"
+                  v-if="canAddToCart"
+                  id="btn_add"
+                  class="btn btn-primary ms-auto"
+                >
+                  Add to Cart
+                </button>
 
-              <button
-                disabled="disabled"
-                v-else
-                class="btn btn-primary ms-auto"
-              >
-                Add to Cart
-              </button>
-            </div>
-          </main>
+                <button
+                  disabled="disabled"
+                  v-else
+                  class="btn btn-primary ms-auto"
+                >
+                  Add to Cart
+                </button>
+              </div>
+            </main>
+          </div>
         </div>
       </div>
-      <!-- </div> -->
+      <div v-else>
+        <h2>Checkout</h2>
+        <p>
+          <strong> First Name: </strong>
+          <input type="text" v-model="order.firstName" />
+        </p>
+        <p>
+          <strong> Last Name: </strong>
+          <input type="text" v-model="order.lastName" />
+        </p>
+        <hr />
+        <h2>Order Information</h2>
+        <p><b>Name:</b> {{order.firstName}} {{order.lastName}}</p>
+        <p><b>Items:</b> {{cartSubjects}}</p>
+      </div>
     </div>
 
     <script>
@@ -71,6 +101,7 @@
         el: "#app",
         // Initial data has been declared as a function
         data: {
+          showLesson: true,
           sitename: "After School Activities",
           // Creating lesson object
           lesson: {
@@ -82,6 +113,10 @@
             displaySpaces: 5,
             image: "./img/arduino.jpg",
           },
+          order: {
+            firstName: "",
+            lastName: "",
+          },
           // Creating cart object with empty array
           cart: [],
         },
@@ -89,7 +124,10 @@
           // Add the lesson to the cart
           addToCart: function () {
             this.lesson.displaySpaces--;
-            this.cart.push(this.lesson.id);
+            this.cart.push(this.lesson.id, this.lesson.subject);
+          },
+          showCheckout() {
+            this.showLesson = this.showLesson ? false : true;
           },
         },
         // Computed properties are added.
@@ -97,6 +135,12 @@
           // This computed property checks if the lesson has spaces available.
           canAddToCart() {
             return this.lesson.spaces > this.cart.length;
+          },
+          // this computed property returns the subject of items in the cart.
+          cartSubjects() {
+            for (let i = 1; i < this.cart.length; i = i + 2) {
+              return this.cart[i];
+            }
           },
         },
       });
