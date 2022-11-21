@@ -36,9 +36,17 @@
   <body class="m-4">
     <div id="app">
       <h1 class="display-4" v-text="sitename" style="text-align: center"></h1>
-      <div>
-        <button v-on:click="showCheckout">
-          <!-- {{cartItemCount}} -->
+      <div v-if="cartItemCount != 0">
+        <button id="checkout" class="btn btn-dark" v-on:click="showCheckout">
+          <span><i class="fa-solid fa-cart-shopping"></i> &nbsp; Checkout</span>
+        </button>
+      </div>
+      <div v-else>
+        <button
+          id="checkout"
+          class="btn btn-dark invisible"
+          v-on:click="showCheckout"
+        >
           <span><i class="fa-solid fa-cart-shopping"></i> &nbsp; Checkout</span>
         </button>
       </div>
@@ -94,6 +102,7 @@
         <hr />
         <h2>Order Information</h2>
         <p><b>Name:</b> {{order.firstName}} {{order.lastName}}</p>
+        <button v-on:click="submitForm">Place Order</button>
       </div>
     </div>
 
@@ -103,19 +112,9 @@
         el: "#app",
         // Initial data has been declared as a function
         data: {
-          showLesson: true,
           sitename: "After School Activities",
           // Creating lesson object
           lessons: lessons,
-          // {
-          //   id: 1001,
-          //   subject: "Arduino",
-          //   location: "Dubai, UAE",
-          //   price: 2000,
-          //   spaces: 5,
-          //   displaySpaces: 5,
-          //   image: "./img/arduino.jpg",
-          // },
           order: {
             firstName: "",
             lastName: "",
@@ -126,12 +125,15 @@
         },
         methods: {
           // Add the lesson to the cart
-          addToCart: function () {
-            this.lesson.displaySpaces--;
-            this.cart.push(this.lesson.id, this.lesson.subject);
+          addToCart(lesson) {
+            lesson.displaySpaces--;
+            this.cart.push(lesson.id);
           },
           showCheckout() {
             this.showLesson = this.showLesson ? false : true;
+          },
+          submitForm() {
+            alert("Order Submitted");
           },
           // This computed property checks if the lesson has spaces available.
           canAddToCart(lesson) {
