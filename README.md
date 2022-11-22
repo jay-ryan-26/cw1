@@ -1,6 +1,4 @@
 # cw1
 
-Github Link:
-https://github.com/jay-ryan-26/cw1
-
-Github Pages Link:
+Github Pages Link: 
+https://jay-ryan-26.github.io/cw1/
