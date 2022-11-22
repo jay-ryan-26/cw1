@@ -6,7 +6,6 @@ let lessons = [
     price: 2000,
     spaces: 5,
     displaySpaces: 5,
-    rating: 5,
     image: "./img/arduino.jpg",
   },
   {
@@ -16,7 +15,6 @@ let lessons = [
     price: 1000,
     spaces: 5,
     displaySpaces: 5,
-    rating: 5,
     image: "./img/python.jpg",
   },
   {
@@ -26,7 +24,6 @@ let lessons = [
     price: 1500,
     spaces: 5,
     displaySpaces: 5,
-    rating: 4.5,
     image: "./img/js.jpg",
   },
   {
@@ -36,7 +33,6 @@ let lessons = [
     price: 1000,
     spaces: 5,
     displaySpaces: 5,
-    rating: 4,
     image: "./img/vue.jpg",
   },
   {
@@ -46,7 +42,6 @@ let lessons = [
     price: 1200,
     spaces: 5,
     displaySpaces: 5,
-    rating: 4.5,
     image: "./img/react.jpg",
   },
   {
@@ -56,7 +51,42 @@ let lessons = [
     price: 800,
     spaces: 5,
     displaySpaces: 5,
-    rating: 3,
+    image: "./img/sql.jpg",
+  },
+  {
+    id: 7,
+    subject: "NoSQL",
+    location: "Dubai, UAE",
+    price: 900,
+    spaces: 5,
+    displaySpaces: 5,
+    image: "./img/sql.jpg",
+  },
+  {
+    id: 8,
+    subject: "MongoDB",
+    location: "Dubai, UAE",
+    price: 1100,
+    spaces: 5,
+    displaySpaces: 5,
+    image: "./img/sql.jpg",
+  },
+  {
+    id: 9,
+    subject: "SQLite",
+    location: "Dubai, UAE",
+    price: 1000,
+    spaces: 5,
+    displaySpaces: 5,
+    image: "./img/sql.jpg",
+  },
+  {
+    id: 10,
+    subject: "SQL",
+    location: "Dubai, UAE",
+    price: 700,
+    spaces: 5,
+    displaySpaces: 5,
     image: "./img/sql.jpg",
   },
 ];
