@@ -33,7 +33,7 @@ let lessons = [
     price: 1000,
     spaces: 5,
     displaySpaces: 5,
-    image: "./img/vue.jpg",
+    image: "./img/vue.png",
   },
   {
     id: 5,
@@ -60,7 +60,7 @@ let lessons = [
     price: 900,
     spaces: 5,
     displaySpaces: 5,
-    image: "./img/sql.jpg",
+    image: "./img/nosql.png",
   },
   {
     id: 8,
@@ -78,15 +78,15 @@ let lessons = [
     price: 1000,
     spaces: 5,
     displaySpaces: 5,
-    image: "./img/sql.jpg",
+    image: "./img/sqlite.png",
   },
   {
     id: 10,
-    subject: "SQL",
+    subject: "Java",
     location: "Dubai, UAE",
-    price: 700,
+    price: 1700,
     spaces: 5,
     displaySpaces: 5,
-    image: "./img/sql.jpg",
+    image: "./img/java.png",
   },
 ];
