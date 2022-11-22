@@ -307,18 +307,11 @@
           return 0;
         },
         validateForm() {
-          if (
+          return (
             /^[0-9]+$/.test(this.order.phone) &&
             /^[a-zA-Z ]+$/.test(this.order.firstName) &&
             /^[a-zA-Z ]+$/.test(this.order.lastName)
-          ) {
-            alert("Order Submitted");
-            return (
-              /^[0-9]+$/.test(this.order.phone) &&
-              /^[a-zA-Z ]+$/.test(this.order.firstName) &&
-              /^[a-zA-Z ]+$/.test(this.order.lastName)
-            );
-          }
+          );
         },
 
         // Computed properties are added.
