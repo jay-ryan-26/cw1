@@ -14,8 +14,8 @@
       referrerpolicy="no-referrer"
     />
 
-    <script src="./lessons.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.10/dist/vue.js"></script>
+    <script src="./lessons.js"></script>
     <!-- Bootstrap code -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
@@ -36,45 +36,137 @@
   <body class="m-4">
     <div id="app">
       <h1 class="display-4" v-text="sitename" style="text-align: center"></h1>
-      <div>
-        <button v-on:click="showCheckout">
-          <!-- {{cartItemCount}} -->
+      <span>
+        <input type="text" v-model="search" placeholder="Search title.." />
+      </span>
+      <div class="mt-4" v-if="cartItemCount != 0">
+        <button id="checkout" class="btn btn-dark" v-on:click="showCheckout">
           <span><i class="fa-solid fa-cart-shopping"></i> &nbsp; Checkout</span>
         </button>
       </div>
+      <div v-else>
+        <button
+          id="checkout"
+          class="btn btn-dark invisible"
+          v-on:click="showCheckout"
+        >
+          <span><i class="fa-solid fa-cart-shopping"></i> &nbsp; Checkout</span>
+        </button>
+      </div>
+
       <div v-if="showLesson">
-        <div class="card m-5" style="width: 20%">
-          <div class="card-header">
-            <header>
-              <h5 class="card-title">Subject: {{lesson.subject}}</h5>
-            </header>
+        <div>
+          <h3>Sort By</h3>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="radio"
+              name="sort"
+              id="radioLocation"
+              value="location"
+              v-model="sorting"
+            />
+            <label class="form-check-label" for="radioLocation">Location</label>
           </div>
-          <div class="card-body">
-            <main>
-              <img v-bind:src="lesson.image" class="img-fluid" alt="" />
-              <p class="card-text">Location: {{lesson.location}}</p>
-              <p class="card-text">Price: AED {{lesson.price}}</p>
-              <p class="card-text">Spaces: {{lesson.displaySpaces}}</p>
-
-              <div class="d-flex">
-                <button
-                  v-on:click="addToCart"
-                  v-if="canAddToCart"
-                  id="btn_add"
-                  class="btn btn-primary ms-auto"
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="radio"
+              name="sort"
+              id="radioPrice"
+              value="price"
+              v-model="sorting"
+            />
+            <label class="form-check-label" for="radioPrice">Price</label>
+          </div>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="radio"
+              name="sort"
+              id="radioSpace"
+              value="spaces"
+              v-model="sorting"
+            />
+            <label class="form-check-label" for="radioSpace">Spaces</label>
+          </div>
+          <div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="sort"
+                id="radioSubject"
+                value="subject"
+                v-model="sorting"
+              />
+              <label class="form-check-label" for="radioSubject">Subject</label>
+            </div>
+            <div>
+              <h4>Direction</h4>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="sortD"
+                  id="asc"
+                  value="asc"
+                  v-model="sortDir"
+                />
+                <label class="form-check-label" for="radioSubject"
+                  >Ascending</label
                 >
-                  Add to Cart
-                </button>
-
-                <button
-                  disabled="disabled"
-                  v-else
-                  class="btn btn-primary ms-auto"
-                >
-                  Add to Cart
-                </button>
               </div>
-            </main>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="sortD"
+                  id="desc"
+                  value="desc"
+                  v-model="sortDir"
+                />
+                <label class="form-check-label" for="radioSubject"
+                  >Descending</label
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        <div v-for="lesson in searchFilter">
+          <div class="card m-5 lesson" style="width: 20%">
+            <div class="card-header">
+              <header>
+                <h5 class="card-title">Subject: {{lesson.subject}}</h5>
+              </header>
+            </div>
+            <div class="card-body">
+              <main>
+                <img v-bind:src="lesson.image" class="img-fluid" alt="" />
+                <p class="card-text">Location: {{lesson.location}}</p>
+                <p class="card-text">Price: AED {{lesson.price}}</p>
+                <p class="card-text">Spaces: {{lesson.displaySpaces}}</p>
+
+                <div class="d-flex">
+                  <button
+                    v-on:click="addToCart(lesson)"
+                    v-if="canAddToCart(lesson)"
+                    id="btn_add"
+                    class="btn btn-primary ms-auto"
+                  >
+                    Add to Cart
+                  </button>
+
+                  <button
+                    disabled="disabled"
+                    v-else
+                    class="btn btn-primary ms-auto"
+                  >
+                    Add to Cart
+                  </button>
+                </div>
+              </main>
+            </div>
           </div>
         </div>
       </div>
@@ -82,16 +174,62 @@
         <h2>Checkout</h2>
         <p>
           <strong> First Name: </strong>
-          <input type="text" v-model="order.firstName" />
+          <input type="text" v-model="order.firstName" required />
         </p>
         <p>
           <strong> Last Name: </strong>
-          <input type="text" v-model="order.lastName" />
+          <input type="text" v-model="order.lastName" required />
         </p>
+        <p>
+          <strong> Phone: </strong>
+          <input type="text" v-model="order.phone" required />
+        </p>
+        <br />
+        <hr />
+        <h2>Cart</h2>
+        <div v-for="lesson in displayCart">
+          <div class="card m-5 lesson" style="width: 20%">
+            <div class="card-header">
+              <header>
+                <h5 class="card-title">Subject: {{lesson.subject}}</h5>
+              </header>
+            </div>
+            <div class="card-body">
+              <main>
+                <img v-bind:src="lesson.image" class="img-fluid" alt="" />
+                <p class="card-text">Location: {{lesson.location}}</p>
+                <p class="card-text">Price: AED {{lesson.price}}</p>
+
+                <div class="d-flex">
+                  <button
+                    @click="removeItem(lesson.id)"
+                    id="remove"
+                    class="btn btn-primary ms-auto"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </main>
+            </div>
+          </div>
+        </div>
         <hr />
         <h2>Order Information</h2>
         <p><b>Name:</b> {{order.firstName}} {{order.lastName}}</p>
-        <p><b>Items:</b> {{cartSubjects}}</p>
+        <p><b>Phone:</b> {{order.phone}}</p>
+        <div v-if="validateForm">
+          <button>Place Order</button>
+
+          <div class="alert alert-success mt-4" role="alert">
+            You can now check out.
+          </div>
+        </div>
+        <div v-else>
+          <button disabled="disabled">Place Order</button>
+          <div class="alert alert-danger mt-4" role="alert">
+            Please update the form with appropriate information.
+          </div>
+        </div>
       </div>
     </div>
 
@@ -99,48 +237,153 @@
       // Create a Vue instance with some options
       let app = new Vue({
         el: "#app",
+
         // Initial data has been declared as a function
         data: {
-          showLesson: true,
           sitename: "After School Activities",
+          sorting: "price",
+          sortDir: "asc",
+          search: "",
+
           // Creating lesson object
-          lesson: {
-            id: 1001,
-            subject: "Arduino",
-            location: "Dubai, UAE",
-            price: 2000,
-            spaces: 5,
-            displaySpaces: 5,
-            image: "./img/arduino.jpg",
-          },
+          lessons: lessons,
           order: {
             firstName: "",
             lastName: "",
+            phone: "",
           },
           // Creating cart object with empty array
           cart: [],
+          showLesson: true,
         },
         methods: {
           // Add the lesson to the cart
-          addToCart: function () {
-            this.lesson.displaySpaces--;
-            this.cart.push(this.lesson.id, this.lesson.subject);
+          addToCart(lesson) {
+            lesson.displaySpaces--;
+            this.cart.push(lesson.id);
           },
           showCheckout() {
             this.showLesson = this.showLesson ? false : true;
           },
+          submitForm() {
+            alert("Order Submitted");
+          },
+          // This computed property checks if the lesson has spaces available.
+          canAddToCart(lesson) {
+            return lesson.spaces > this.cartCount(lesson.id);
+          },
+          cartCount(id) {
+            let count = 0;
+            for (let i = 0; i < this.cart.length; i++) {
+              if (this.cart[i] === id) [count++];
+            }
+            return count;
+          },
+          removeItem(id) {
+            for (let i = 0; i < this.cart.length; i++) {
+              if (this.cart[i] === id) {
+                this.cart.splice(i, 1);
+                this.lessons[i].displaySpaces++;
+                break;
+              }
+            }
+          },
         },
+        // validation to get numbers only
+
+        compare(a, b) {
+          if (
+            (this.sorting === "subject" && a.subject > b.subject) ||
+            (this.sorting === "location" && a.location > b.location)
+          ) {
+            return 1;
+          }
+          if (
+            (this.sorting === "subject" && a.subject < b.subject) ||
+            (this.sorting === "location" && a.location < b.location)
+          ) {
+            return -1;
+          }
+          return 0;
+        },
+        validateForm() {
+          if (
+            /^[0-9]+$/.test(this.order.phone) &&
+            /^[a-zA-Z ]+$/.test(this.order.firstName) &&
+            /^[a-zA-Z ]+$/.test(this.order.lastName)
+          ) {
+            alert("Order Submitted");
+            return (
+              /^[0-9]+$/.test(this.order.phone) &&
+              /^[a-zA-Z ]+$/.test(this.order.firstName) &&
+              /^[a-zA-Z ]+$/.test(this.order.lastName)
+            );
+          }
+        },
+
         // Computed properties are added.
         computed: {
-          // This computed property checks if the lesson has spaces available.
-          canAddToCart() {
-            return this.lesson.spaces > this.cart.length;
-          },
           // this computed property returns the subject of items in the cart.
-          cartSubjects() {
-            for (let i = 1; i < this.cart.length; i = i + 2) {
-              return this.cart[i];
+
+          cartItemCount: function () {
+            return this.cart.length || "";
+          },
+
+          sortedLessons() {
+            let lessonsArray = this.lessons.slice(0);
+            // sorting price
+            if (this.sorting === "price") {
+              return this.sortDir === "asc"
+                ? lessonsArray.sort((a, b) => {
+                    return a.price - b.price;
+                  })
+                : lessonsArray.sort((a, b) => {
+                    return b.price - a.price;
+                  });
             }
+
+            // sorting spaces
+            if (this.sorting === "spaces") {
+              return this.sortDir === "asc"
+                ? lessonsArray.sort((a, b) => {
+                    return a.spaces - b.spaces;
+                  })
+                : lessonsArray.sort((a, b) => {
+                    return b.spaces - a.spaces;
+                  });
+            }
+
+            // sorting subject or location
+            if (
+              (this.sorting === "subject" || this.sorting === "location") &&
+              this.sortDir === "asc"
+            ) {
+              return lessonsArray.sort(this.compare);
+            } else {
+              lessonsArray.sort(this.compare);
+              return lessonsArray.reverse();
+            }
+          },
+          searchFilter() {
+            return this.sortedLessons.filter((lesson) => {
+              return (
+                lesson.subject
+                  .toLowerCase()
+                  .includes(this.search.toLowerCase()) ||
+                lesson.location
+                  .toLowerCase()
+                  .includes(this.search.toLowerCase())
+              );
+            });
+          },
+          displayCart() {
+            return this.cart.map((id) => {
+              return this.lessons.find((lesson) => {
+                if (lesson.id === id) {
+                  return lesson;
+                }
+              });
+            });
           },
         },
       });
