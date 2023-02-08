@@ -256,6 +256,20 @@
           cart: [],
           showLesson: true,
         },
+        created: function () {
+          console.log("requesting data from server ...");
+
+          // fetch('http://localhost:3000').then(
+          //     function (response) {
+          //         response.json().then(
+          //             function (json) {
+          //                 store.product = json;
+          //                 console.log(json);
+          //             }
+          //         );
+          //     }
+          // );
+        },
         methods: {
           // Add the lesson to the cart
           addToCart(lesson) {

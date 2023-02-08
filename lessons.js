@@ -89,4 +89,13 @@ let lessons = [
     displaySpaces: 5,
     image: "./img/vue.png",
   },
+  {
+    id: 11,
+    subject: "Coding abc",
+    location: "Dubai, UAE",
+    price: 1700,
+    spaces: 5,
+    displaySpaces: 5,
+    image: "./img/vue.png",
+  },
 ];

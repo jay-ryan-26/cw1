@@ -1,0 +1,20 @@
+{
+  "name": "cwnew",
+  "version": "1.0.0",
+  "description": "Github Pages Link: \r https://jay-ryan-26.github.io/cw1/",
+  "main": "lessons.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jay-ryan-26/cw1.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jay-ryan-26/cw1/issues"
+  },
+  "homepage": "https://github.com/jay-ryan-26/cw1#readme"
+}
