@@ -4,25 +4,43 @@ const fs = require("fs");
 require("dotenv").config();
 const app = express();
 const Port = process.env.PORT;
+const cors = require("cors");
 const ConnectionString = process.env.CONNECTION_STRING;
-
 app.use(express.json());
-app.set("port", 3000);
+app.set("port", Port);
+
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   next();
 });
-const ObjectID = require("mongodb").ObjectId;
-const MongoClient = require("mongodb").MongoClient;
 
-MongoClient.connect(ConnectionString, (err, client) => {
-  db = client.db("webstore");
-});
+app.use(cors());
 
 app.use((req, res, next) => {
   console.log("Req IP: ", req.url);
   console.log("Req Date: ", new Date());
   next();
+});
+
+const ObjectID = require("mongodb").ObjectId;
+const MongoClient = require("mongodb").MongoClient;
+
+let db;
+MongoClient.connect(ConnectionString, (err, client) => {
+  // mongo = client;
+  db = client.db("webstore");
+});
+
+app.use(express.static("public"));
+
+app.get("/lessons", (req, res, next) => {
+  db.collection("lessons")
+    .find({})
+    .toArray((e, result) => {
+      if (e) return next(e);
+      res.send(result);
+      console.log("Got Lessons");
+    });
 });
 
 app.use((req, res, next) => {
@@ -40,12 +58,11 @@ app.use((req, res, next) => {
     }
   });
 });
-
 app.use((req, res) => {
   res.status(404);
   res.send("File Not Found!");
 });
 
-app.listen(3000, () => {
-  console.log("app on port: localhost:3000");
+app.listen(Port, () => {
+  console.log(`app on port: localhost:${Port}`);
 });
